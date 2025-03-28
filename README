@@ -1,0 +1,11 @@
+Started learning Python. Work on progress, so not the best or most efficient code. 
+Developed in Pythonista on iPad.
+
+Based on Pythonista Analog Clock example. And with a little help from CoPilot.
+
+The clock shows the time as “ten minutes past nine, quarter to 12, etc”
+Speech can be turned on or off
+Student must rotate the hands to the correct time. 
+There are 4 levels: hours, half hours, quarter hours and on 5 minute intervals
+
+The TellTime class supports multiple languages (English, Dutch, German). But no support yet to change language in the GUI

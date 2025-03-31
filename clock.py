@@ -51,7 +51,7 @@ class Clock(Scene):
     lesson_hours = 0
     lesson_minutes = 0
     lesson_count = 0
-    lesson_todo = 2
+    lesson_todo = 10
     lesson_good = 0
     lesson_error = 0
         
@@ -374,6 +374,3 @@ if __name__ == '__main__':
     v.present('full_screen')
     tell_time = TellTime()
     tell_time.set_language('de_DE')
-
-
-

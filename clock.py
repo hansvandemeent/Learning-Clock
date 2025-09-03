@@ -8,11 +8,13 @@ import random
 import speech
 import time
 import string
+from trace import Trace
 
 CONST_BACKGROUNDCOLOR = '#cc8800'
 CONST_FACECOLOR = '#fff0d3'
 CONST_TEXTCOLOR = '#6d4900'
 CONST_BORDERCOLOR = '#6d4900'
+
 
 
 def calculate_angle(vertex, position):
@@ -46,6 +48,7 @@ def calculate_angle(vertex, position):
     return angle_radians, int(math.degrees(angle_radians) / 6)
 
 ''' Shows a clock face, hands can move by a rotation gesture '''
+#@Trace
 class Clock(Scene):
 
     lesson_hours = 0
@@ -55,6 +58,7 @@ class Clock(Scene):
     lesson_good = 0
     lesson_error = 0
         
+    #@Trace
     def setup(self):
         self.enabled = True
         self.background_color = CONST_BACKGROUNDCOLOR
@@ -98,14 +102,17 @@ class Clock(Scene):
         self.circle.add_child(ShapeNode(ui.Path.oval(0, 0, 15, 15), 'black'))
         self.move_hands(10, 10)
         
+    #@Trace
     def did_change_size(self):
         # Reposition the circle in the middle
         self.circle, position = self.size / 2
     
+    #@Trace
     def enabled(e):
         self.enabled = e
         
     ''' Set the clock hands to this time '''
+    #@Trace
     def move_hands(self, hours, minutes):
         self.hands[1].rotation = 2 * math.pi * (minutes / -60)
         minute_part = (minutes / 60)
@@ -113,6 +120,7 @@ class Clock(Scene):
         
     
     ''' Move the clock hands '''    
+    #@Trace
     def touch_moved(self, touch):
         prev_minutes = self.minutes
         angle, self.minutes = calculate_angle(self.circle.position, touch.location)
@@ -131,6 +139,7 @@ class Clock(Scene):
           
     ''' Touch ended check the result
         The self.on_change function is replaced by a callback '''
+    #@Trace
     def touch_ended(self, touch):
         if (self.enabled):
             self.on_change(self)
@@ -139,6 +148,7 @@ class Clock(Scene):
         pass
 
 
+#@Trace
 class TellTime():
     """
         TellTime class converts time digits (10:25) to text (twenty-five after ten)
@@ -174,6 +184,7 @@ class TellTime():
                        (' ', 'minuut ', 'minuten ', ' uur', 'uren', 'voor ', 'over ', 'kwart ', 'half '),
                        (' ', 'minute ', 'minuten ', ' Uhr ', 'Uhren ', 'vor ', 'nach ', 'viertel ', 'halb '))
                         
+    #@Trace
     def set_language(self, lang):
         match lang:
             case 'en_US': self.language = 0
@@ -181,6 +192,7 @@ class TellTime():
             case 'de_DE': self.language = 2
             case '_': self.language = 0
             
+    #@Trace
     def minutes_tell(self, m):
         """
             Numbers up to 20 sometimes spelled and pronounced differently:
@@ -197,6 +209,7 @@ class TellTime():
             minutes = self.tens[self.language][minute_tens] + self.units[self.language][minute_units] + ' '
         return minutes
         
+    #@Trace
     def translate(self, hours, minutes, commands):
         command_list = commands.split(' ')
         s = ''
@@ -223,6 +236,7 @@ class TellTime():
         return s
 
     ''' lower case: value, upper case: text '''
+    #@Trace
     def tell(self, hours, minutes):
         """
            There are up to 8 distinct ways to pronounce minutes time,
@@ -246,6 +260,7 @@ class TellTime():
 
 
 ''' Generate a random time in hours '''
+#@Trace
 def mode_hours():
     prev_hours = clock.lesson_hours
     while (prev_hours == clock.lesson_hours):
@@ -254,6 +269,7 @@ def mode_hours():
 
 
 ''' Generate a random time in half hours '''
+#@Trace
 def mode_half_hours():
     clock.lesson_hours = random.randint(1, 11)
     prev_minutes = clock.lesson_minutes
@@ -263,6 +279,7 @@ def mode_half_hours():
  
 
 ''' Generate a time in quarter hours '''    
+#@Trace
 def mode_quarter_hours():
     clock.lesson_hours = random.randint(1, 11)
     prev_minutes = clock.lesson_minutes
@@ -271,6 +288,7 @@ def mode_quarter_hours():
     return tell_time.tell(clock.lesson_hours, clock.lesson_minutes)
  
 ''' Generate a time in increments of 5 minutes '''           
+#@Trace
 def mode_five_minutes():
     clock.lesson_hours = random.randint(1, 11)
     prev_minutes = clock.lesson_minutes
@@ -280,6 +298,7 @@ def mode_five_minutes():
 
 
 ''' Callback function to show results '''
+#@Trace
 def check_result(self):
     self.lesson_count += 1
     if ((self.lesson_hours == self.hours) and (self.lesson_minutes == self.minutes)):
@@ -306,6 +325,7 @@ def check_result(self):
     v['start_button'].enabled = True
 
 ''' Act on a button pressure '''
+#@Trace
 def button_tapped(sender):
     match sender.title:
         case '🏁':
@@ -341,6 +361,7 @@ def button_tapped(sender):
             v['speech_button'].title = '🔈' 
 
 
+#@Trace
 def finish_speaking():
     # Block until speech synthesis has finished
     while speech.is_speaking():
